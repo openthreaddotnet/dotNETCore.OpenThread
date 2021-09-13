@@ -16,7 +16,7 @@ namespace Samples
         private static byte channel = 11;
         private static ushort panid = 1000;
 
-        private static LoWPAN loWPAN;
+        private static LoWPAN loWPAN = new LoWPAN();
 
         static void Main(string[] args)
         {           
@@ -32,12 +32,10 @@ namespace Samples
                 Console.ReadKey();
                 return;
             }
-
-            loWPAN = new LoWPAN(args[0]);
-          
+            
             try
             {
-                loWPAN.Open();
+                loWPAN.Open(args[0]);
             }
             catch (Exception ex)
             {
