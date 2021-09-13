@@ -1,28 +1,50 @@
-﻿#if (NANOFRAMEWORK_1_0)
-using nanoFramework.OpenThread.NCP;
+﻿//*
+//*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//*
+//*Primitive Types
+//*
+//*+----------+----------------------+---------------------------------+
+//*   | Char | Name | Description |
+//*+----------+----------------------+---------------------------------+
+//*   | "." | DATATYPE_VOID | Empty data type.Used           |
+// *   |          |                      | internally.                     |
+// *   |   "b"    | DATATYPE_BOOL        | Boolean value. Encoded in       |
+// *   |          |                      | 8-bits as either 0x00 or 0x01.  |
+// *   |          |                      | All other values are illegal.   |
+// *   |   "C"    | DATATYPE_UINT8       | Unsigned 8-bit integer.         |
+// *   |   "c"    | DATATYPE_INT8        | Signed 8-bit integer.           |
+// *   |   "S"    | DATATYPE_UINT16      | Unsigned 16-bit integer.        |
+// *   |   "s"    | DATATYPE_INT16       | Signed 16-bit integer.          |
+// *   |   "L"    | DATATYPE_UINT32      | Unsigned 32-bit integer.        |
+// *   |   "l"    | DATATYPE_INT32       | Signed 32-bit integer.          |
+// *   |   "i"    | DATATYPE_UINT_PACKED | Packed Unsigned Integer.See    |
+// *   |          |                      | description below               |
+// *   |   "6"    | DATATYPE_IPv6ADDR    | IPv6 Address. (Big-endian)      |
+// *   | "E"      | DATATYPE_EUI64       | EUI - 64 Address. (Big - endian) |
+//*    | "e"      | DATATYPE_EUI48       | EUI - 48 Address. (Big - endian) |
+//*    | "D"      | DATATYPE_DATA        | Arbitrary data.See related     |
+// *   |          |                      | section below for details.      |
+// *   |   "d"    | DATATYPE_DATA_WLEN   | Arbitrary data with prepended   |
+// *   |          |                      | length. See below for details   |
+// *   |   "U"    | DATATYPE_UTF8        | Zero-terminated UTF8-encoded    |
+// *   |          |                      | string.                         |
+// *   | "t(...)" | DATATYPE_STRUCT      | Structured datatype with        |
+// *   |          |                      | prepended length.               |
+// *   | "A(...)" | DATATYPE_ARRAY       | Array of datatypes. Compound    |
+// *   |          |                      | type.                           |
+// *   +----------+----------------------+---------------------------------+
+
+#if (NANOFRAMEWORK_1_0)
+using System.Collections;
+
 namespace nanoFramework.OpenThread.Spinel
 { 
 #else
-using dotNETCore.OpenThread.NCP;
+using System.Collections;
+
 namespace dotNETCore.OpenThread.Spinel
 {
-#endif  
-    public class SpinelEUI48
-    {
-
-        public byte[] bytes = new byte[6];
-    }
-
-    public class SpinelEUI64
-    {
-        public byte[] bytes = new byte[8];
-    }
-
-    public class SpinelIPv6Address
-    {
-        public byte[] bytes = new byte[16];
-    }
-
+#endif      
     public class SpinelCommands
     {
         // Singular class that contains all Spinel constants. """
@@ -133,9 +155,65 @@ namespace dotNETCore.OpenThread.Spinel
         SPINEL_CAP_THREAD_SERVICE = (SPINEL_CAP_THREAD__BEGIN + 5),
         SPINEL_CAP_THREAD__END = 1152,     
     }
-   
+
+    public enum SpinelNetRole :byte
+    {
+        SPINEL_NET_ROLE_DETACHED = 0,
+        SPINEL_NET_ROLE_CHILD = 1,
+        SPINEL_NET_ROLE_ROUTER = 2,
+        SPINEL_NET_ROLE_LEADER = 3
+    }
+
+    public enum SpinelIPv6ICMPPingOffloadMode : byte
+    {
+        SPINEL_IPV6_ICMP_PING_OFFLOAD_DISABLED = 0,
+        SPINEL_IPV6_ICMP_PING_OFFLOAD_UNICAST_ONLY = 1,
+        SPINEL_IPV6_ICMP_PING_OFFLOAD_MULTICAST_ONLY = 2,
+        SPINEL_IPV6_ICMP_PING_OFFLOAD_ALL = 3,
+    }
+    
+    public static class SpinelTools
+    {
+        public static Hashtable NetRoleToStr = new Hashtable()
+        {        
+            {SpinelNetRole.SPINEL_NET_ROLE_DETACHED, "DETACHED"},        
+            {SpinelNetRole.SPINEL_NET_ROLE_CHILD, "CHILD"},        
+            {SpinelNetRole.SPINEL_NET_ROLE_ROUTER, "ROUTER"},       
+            {SpinelNetRole.SPINEL_NET_ROLE_LEADER, "LEADER"},    
+        };
+
+        public static string SpinelNetRoleToString(SpinelNetRole NetRole)
+        {
+            return (string)NetRoleToStr[NetRole];
+            //foreach(DictionaryEntry row in NetRoleToStr)
+            //{
+            //    if ((SpinelNetRole)row.Key == NetRole) return (string)row.Value;
+            //}
+
+         //   return "unknown";
+        }
+
+        public static SpinelNetRole StringToSpinelNetRole(string NetRole)
+        {
+            SpinelNetRole returnNetRole=SpinelNetRole.SPINEL_NET_ROLE_DETACHED;
+
+            foreach (DictionaryEntry row in NetRoleToStr)
+            {
+                if ((string)row.Value == NetRole) 
+                {
+                    returnNetRole = (SpinelNetRole)row.Key;
+                    break;
+                } 
+            }
+
+            return returnNetRole;
+        }
+    }
+
     public class SpinelProperties
     {
+       
+
         ////=========================================
         //// Spinel Properties
         ////=========================================
@@ -194,7 +272,7 @@ namespace dotNETCore.OpenThread.Spinel
         public const int SPINEL_PROP_NET_ROLE = SPINEL_PROP_NET__BEGIN + 3;//< [C]
         public const int SPINEL_PROP_NET_NETWORK_NAME = SPINEL_PROP_NET__BEGIN + 4;//< [U]
         public const int SPINEL_PROP_NET_XPANID = SPINEL_PROP_NET__BEGIN + 5;//< [D]
-        public const int SPINEL_PROP_NET_MASTER_KEY = SPINEL_PROP_NET__BEGIN + 6;//< [D]
+        public const int SPINEL_PROP_NET_NETWORK_KEY = SPINEL_PROP_NET__BEGIN + 6;//< [D]
         public const int SPINEL_PROP_NET_KEY_SEQUENCE_COUNTER = SPINEL_PROP_NET__BEGIN + 7;//< [L]
         public const int SPINEL_PROP_NET_PARTITION_ID = SPINEL_PROP_NET__BEGIN + 8;//< [L]
         public const int SPINEL_PROP_NET_REQUIRE_JOIN_EXISTING = SPINEL_PROP_NET__BEGIN + 9;//< [b]        
@@ -205,7 +283,7 @@ namespace dotNETCore.OpenThread.Spinel
         public const int SPINEL_PROP_THREAD__BEGIN = 0x50;
         public const int SPINEL_PROP_THREAD_LEADER_ADDR = SPINEL_PROP_THREAD__BEGIN + 0;//< [6]
         public const int SPINEL_PROP_THREAD_PARENT = SPINEL_PROP_THREAD__BEGIN + 1;//< LADDR, SADDR [ES]
-        public const int SPINEL_PROP_THREAD_CHILD_TABLE = SPINEL_PROP_THREAD__BEGIN + 2;//< [A(t(ES))]
+        public const int SPINEL_PROP_THREAD_CHILD_TABLE = SPINEL_PROP_THREAD__BEGIN + 2;//< [A(t(ES))] /** Format: [A(t(ESLLCCcCc)] - Read only
         public const int SPINEL_PROP_THREAD_LEADER_RID = SPINEL_PROP_THREAD__BEGIN + 3;//< [C]
         public const int SPINEL_PROP_THREAD_LEADER_WEIGHT = SPINEL_PROP_THREAD__BEGIN + 4;//< [C]
         public const int SPINEL_PROP_THREAD_LOCAL_LEADER_WEIGHT = SPINEL_PROP_THREAD__BEGIN + 5;//< [C]
@@ -303,11 +381,12 @@ namespace dotNETCore.OpenThread.Spinel
         public const int SPINEL_PROP_IPV6_ICMP_PING_OFFLOAD_MODE = SPINEL_PROP_IPV6__BEGIN + 7; ///< [b]
 
 
-        public const int PROP_STREAM__BEGIN = 0x70;
-        public const int PROP_STREAM_DEBUG = PROP_STREAM__BEGIN + 0; //# < [U]
-        public const int PROP_STREAM_RAW = PROP_STREAM__BEGIN + 1; // # < [D]
-        public const int PROP_STREAM_NET = PROP_STREAM__BEGIN + 2; // # < [D]
-        public const int PROP_STREAM_NET_INSECURE = PROP_STREAM__BEGIN + 3;//  # < [D]
+        public const int SPINEL_PROP_STREAM__BEGIN = 0x70;
+        public const int SPINEL_PROP_STREAM_DEBUG = SPINEL_PROP_STREAM__BEGIN + 0; //# <  Format: `U` (stream, read only)
+        public const int SPINEL_PROP_STREAM_RAW = SPINEL_PROP_STREAM__BEGIN + 1; // # < Format: `dD` (stream, read only)
+        public const int SPINEL_PROP_STREAM_NET = SPINEL_PROP_STREAM__BEGIN + 2; // # < Format: `dD` (stream, read only)
+        public const int SPINEL_PROP_STREAM_NET_INSECURE = SPINEL_PROP_STREAM__BEGIN + 3;//  # Format: `dD` (stream, read only)
+        public const int SPINEL_PROP_STREAM_LOG = SPINEL_PROP_STREAM__BEGIN + 4;//  # Format: `UD` (stream, read only)
         public const int PROP_STREAM__END = 0x80;
 
         //public const int PROP_THREAD_EXT__BEGIN = 0x1500;

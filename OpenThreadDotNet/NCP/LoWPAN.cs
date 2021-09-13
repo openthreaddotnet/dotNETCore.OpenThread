@@ -2,17 +2,20 @@
 using System.Collections;
 using System.Threading;
 
+
 #if (NANOFRAMEWORK_1_0)
 using nanoFramework.OpenThread.Net;
 using nanoFramework.OpenThread.Net.Lowpan;
 using nanoFramework.OpenThread.Spinel;
+using nanoFramework.OpenThread.Core;
 
 namespace nanoFramework.OpenThread.NCP
-{ 
+{
 #else
 using dotNETCore.OpenThread.Net;
 using dotNETCore.OpenThread.Net.Lowpan;
 using dotNETCore.OpenThread.Spinel;
+using dotNETCore.OpenThread.Core;
 
 namespace dotNETCore.OpenThread.NCP
 {
@@ -208,21 +211,21 @@ namespace dotNETCore.OpenThread.NCP
     
         public bool Commissioned => throw new NotImplementedException();
 
-        public LoWPAN(string portName)
-        {
-            stream = new SerialStream(portName);
-        }
+        //public LoWPAN(string portName)
+        //{
+        //    stream = new SerialStream(portName);
+        //}
 
-        public LoWPAN(IStream stream)
-        {
-            this.stream = stream;
-        }
+        //public LoWPAN(IStream stream)
+        //{
+        //    this.stream = stream;
+        //}
      
-        public void Open()
+        public void Open(string portName)
         {
-            wpanApi = new WpanApi(stream);
+            wpanApi = new WpanApi();
             wpanApi.FrameDataReceived += new FrameReceivedEventHandler(FrameDataReceived);
-            wpanApi.Open();
+            wpanApi.Open(portName);
 
             //     wpanApi.DoReset();
 
@@ -485,7 +488,7 @@ namespace dotNETCore.OpenThread.NCP
                 
                 return;
             }
-            else if (properyId == SpinelProperties.PROP_STREAM_NET)
+            else if (properyId == SpinelProperties.SPINEL_PROP_STREAM_NET)
             {
                 byte[] ipv6frame = (byte[])frameData.Response;
 
@@ -515,7 +518,7 @@ namespace dotNETCore.OpenThread.NCP
                 lowpanBeaconInfo.Rssi = (sbyte)scanInfo[1];
 
                 ArrayList tempObj = scanInfo[2] as ArrayList;
-                SpinelEUI64 mac = (SpinelEUI64)tempObj[0];
+                EUI64 mac = (EUI64)tempObj[0];
 
                 lowpanBeaconInfo.HardwareAddress = new HardwareAddress(mac.bytes);
                 lowpanBeaconInfo.ShortAddress = (ushort)tempObj[1];
@@ -571,7 +574,7 @@ namespace dotNETCore.OpenThread.NCP
                             return;
                         }
 
-                        SpinelIPv6Address ipaddrLL = (SpinelIPv6Address)frameData.Response;
+                        IPv6Address ipaddrLL = (IPv6Address)frameData.Response;
                         ipLinkLocal = new IPAddress(ipaddrLL.bytes);
 
                         if (OnIpChanged != null)
@@ -589,16 +592,16 @@ namespace dotNETCore.OpenThread.NCP
                             return;
                         }
 
-                        SpinelIPv6Address ipaddrML = (SpinelIPv6Address)frameData.Response;
+                        IPv6Address ipaddrML = (IPv6Address)frameData.Response;
                         ipMeshLocal = new IPAddress(ipaddrML.bytes);
                         break;
 
                     case SpinelProperties.SPINEL_PROP_IPV6_ADDRESS_TABLE:
-                        ipAddresses = NetUtilities.SpinelIPtoSystemIP((SpinelIPv6Address[])frameData.Response);
+                        ipAddresses = NetUtilities.SpinelIPtoSystemIP((IPv6Address[])frameData.Response);
                         break;
 
                     case SpinelProperties.SPINEL_PROP_IPV6_MULTICAST_ADDRESS_TABLE:
-                        ipMulticastAddresses = NetUtilities.SpinelIPtoSystemIP((SpinelIPv6Address[])frameData.Response);
+                        ipMulticastAddresses = NetUtilities.SpinelIPtoSystemIP((IPv6Address[])frameData.Response);
                         break;
 
                     //case SpinelProperties.PROP_NET_SAVED:

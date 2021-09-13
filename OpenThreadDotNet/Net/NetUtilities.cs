@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
 
+
 #if (NANOFRAMEWORK_1_0)
 using nanoFramework.OpenThread.NCP;
-using nanoFramework.OpenThread.Spinel;
+using nanoFramework.OpenThread.Core;
 namespace nanoFramework.OpenThread.Net
-{ 
+{
 #else
 using dotNETCore.OpenThread.NCP;
-using dotNETCore.OpenThread.Spinel;
+using dotNETCore.OpenThread.Core;
 namespace dotNETCore.OpenThread.Net
 {
 #endif
@@ -98,20 +99,20 @@ namespace dotNETCore.OpenThread.Net
             return value;
         }
 
-        internal static IPAddress SpinelIPtoSystemIP(SpinelIPv6Address ipAddress)
+        internal static IPAddress SpinelIPtoSystemIP(IPv6Address ipAddress)
         {
             if (ipAddress == null) return null;
 
             return new IPAddress(ipAddress.bytes);
         }
 
-        internal static IPAddress[] SpinelIPtoSystemIP(SpinelIPv6Address[] ipAddresses)
+        internal static IPAddress[] SpinelIPtoSystemIP(IPv6Address[] ipAddresses)
         {
             if (ipAddresses == null) return null;
 
             ArrayList ipAddr = new ArrayList();
 
-            foreach (SpinelIPv6Address iPv6Address in ipAddresses)
+            foreach (IPv6Address iPv6Address in ipAddresses)
             {
                 ipAddr.Add(SpinelIPtoSystemIP(iPv6Address));
             }
