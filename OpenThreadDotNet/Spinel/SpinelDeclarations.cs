@@ -79,7 +79,7 @@ namespace dotNETCore.OpenThread.Spinel
 
         public const uint RSP_PROP_VALUE_INSERTED = 7;
 
-        public const uint RSP_PROP_VALUE_REMOVED = 8;      
+        public const uint RSP_PROP_VALUE_REMOVED = 8;
     }
 
     public enum Capabilities
@@ -153,10 +153,10 @@ namespace dotNETCore.OpenThread.Spinel
         SPINEL_CAP_THREAD_JOINER = (SPINEL_CAP_THREAD__BEGIN + 3),
         SPINEL_CAP_THREAD_BORDER_ROUTER = (SPINEL_CAP_THREAD__BEGIN + 4),
         SPINEL_CAP_THREAD_SERVICE = (SPINEL_CAP_THREAD__BEGIN + 5),
-        SPINEL_CAP_THREAD__END = 1152,     
+        SPINEL_CAP_THREAD__END = 1152,
     }
 
-    public enum SpinelNetRole :byte
+    public enum SpinelNetRole : byte
     {
         SPINEL_NET_ROLE_DETACHED = 0,
         SPINEL_NET_ROLE_CHILD = 1,
@@ -171,15 +171,178 @@ namespace dotNETCore.OpenThread.Spinel
         SPINEL_IPV6_ICMP_PING_OFFLOAD_MULTICAST_ONLY = 2,
         SPINEL_IPV6_ICMP_PING_OFFLOAD_ALL = 3,
     }
-    
+
+    public enum SpinelProtocolType : uint
+    {
+        SPINEL_PROTOCOL_TYPE_BOOTLOADER = 0,
+        SPINEL_PROTOCOL_TYPE_ZIGBEE_IP = 2,
+        SPINEL_PROTOCOL_TYPE_THREAD = 3
+    }
+
+    public enum SpinelHostPowerState : uint
+    {
+        SPINEL_HOST_POWER_STATE_OFFLINE = 0,
+        SPINEL_HOST_POWER_STATE_DEEP_SLEEP = 1,
+        SPINEL_HOST_POWER_STATE_RESERVED = 2,
+        SPINEL_HOST_POWER_STATE_LOW_POWER = 3,
+        SPINEL_HOST_POWER_STATE_ONLINE = 4
+    }
+
+    public enum SpinelMcuPowerState : uint
+    {
+        SPINEL_MCU_POWER_STATE_ON = 0,
+        SPINEL_MCU_POWER_STATE_LOW_POWER = 1,
+        SPINEL_MCU_POWER_STATE_OFF = 2
+    }
+
+    public enum SpinelScanState : byte
+    {
+        SPINEL_SCAN_STATE_IDLE = 0,
+        SPINEL_SCAN_STATE_BEACON = 1,
+        SPINEL_SCAN_STATE_ENERGY = 2,
+        SPINEL_SCAN_STATE_DISCOVER = 3
+    }
+
+    public enum SpinelStatus
+    {
+        //Ok = 0,  ///< Operation has completed successfully.
+        //Failure = 1,  ///< Operation has failed for some undefined reason.
+        //Unimplemented = 2,  ///< Given operation has not been implemented.
+        //Invalid_Argument = 3,  ///< An argument to the operation is invalid.
+        //Invalid_State = 4,  ///< This operation is invalid for the current device state.
+        //Invalid_Command = 5,  ///< This command is not recognized.
+        //Invalid_Interface = 6,  ///< This interface is not supported.
+        //Internal_error = 7,  ///< An internal runtime error has occured.
+        //Security_error = 8,  ///< A security/authentication error has occured.
+        //Parse_error = 9,  ///< A error has occured while parsing the command.
+        //In_progress = 10, ///< This operation is in progress.
+        //Nomem = 11, ///< Operation prevented due to memory pressure.
+        //Busy = 12, ///< The device is currently performing a mutually exclusive operation
+        //Prop_not_found = 13, ///< The given property is not recognized.
+        //Dropped = 14, ///< A/The packet was dropped.
+        //Empty = 15, ///< The result of the operation is empty.
+        //Cmd_too_big = 16, ///< The command was too large to fit in the internal buffer.
+        //No_ack = 17, ///< The packet was not acknowledged.
+        //Cca_failure = 18, ///< The packet was not sent due to a CCA failure.
+        //Already = 19, ///< The operation is already in progress.
+        //Item_not_found = 20, ///< The given item could not be found.
+        //Invalid_command_for_prop = 21, ///< The given command cannot be performed on this property.
+        //STATUS_RESET_POWER_ON = 112,
+        //STATUS_RESET_EXTERNAL = 113,
+        //Status_Reset_Software = 114,
+        //STATUS_RESET_FAULT = 115,
+        //STATUS_RESET_CRASH = 116,
+        //STATUS_RESET_ASSERT = 117,
+        //STATUS_RESET_OTHER = 118,
+        //STATUS_RESET_UNKNOWN = 119,
+        //STATUS_RESET_WATCHDOG = 120
+
+        SPINEL_STATUS_OK = 0,  ///< Operation has completed successfully.
+        SPINEL_STATUS_FAILURE = 1,  ///< Operation has failed for some undefined reason.
+        SPINEL_STATUS_UNIMPLEMENTED = 2,  ///< Given operation has not been implemented.
+        SPINEL_STATUS_INVALID_ARGUMENT = 3,  ///< An argument to the operation is invalid.
+        SPINEL_STATUS_INVALID_STATE = 4,  ///< This operation is invalid for the current device state.
+        SPINEL_STATUS_INVALID_COMMAND = 5,  ///< This command is not recognized.
+        SPINEL_STATUS_INVALID_INTERFACE = 6,  ///< This interface is not supported.
+        SPINEL_STATUS_INTERNAL_ERROR = 7,  ///< An internal runtime error has occurred.
+        SPINEL_STATUS_SECURITY_ERROR = 8,  ///< A security/authentication error has occurred.
+        SPINEL_STATUS_PARSE_ERROR = 9,  ///< A error has occurred while parsing the command.
+        SPINEL_STATUS_IN_PROGRESS = 10, ///< This operation is in progress.
+        SPINEL_STATUS_NOMEM = 11, ///< Operation prevented due to memory pressure.
+        SPINEL_STATUS_BUSY = 12, ///< The device is currently performing a mutually exclusive operation
+        SPINEL_STATUS_PROP_NOT_FOUND = 13, ///< The given property is not recognized.
+        SPINEL_STATUS_DROPPED = 14, ///< A/The packet was dropped.
+        SPINEL_STATUS_EMPTY = 15, ///< The result of the operation is empty.
+        SPINEL_STATUS_CMD_TOO_BIG = 16, ///< The command was too large to fit in the internal buffer.
+        SPINEL_STATUS_NO_ACK = 17, ///< The packet was not acknowledged.
+        SPINEL_STATUS_CCA_FAILURE = 18, ///< The packet was not sent due to a CCA failure.
+        SPINEL_STATUS_ALREADY = 19, ///< The operation is already in progress.
+        SPINEL_STATUS_ITEM_NOT_FOUND = 20, ///< The given item could not be found.
+        SPINEL_STATUS_INVALID_COMMAND_FOR_PROP = 21, ///< The given command cannot be performed on this property.
+        SPINEL_STATUS_UNKNOWN_NEIGHBOR = 22, ///< The neighbor is unknown.
+        SPINEL_STATUS_NOT_CAPABLE = 23, ///< The target is not capable of handling requested operation.
+        SPINEL_STATUS_RESPONSE_TIMEOUT = 24, ///< No response received from remote node
+
+        SPINEL_STATUS_JOIN__BEGIN = 104,
+
+        /// Generic failure to associate with other peers.
+        /**
+         *  This status error should not be used by implementors if
+         *  enough information is available to determine that one of the
+         *  later join failure status codes would be more accurate.
+         *
+         *  \sa SPINEL_PROP_NET_REQUIRE_JOIN_EXISTING
+         *  \sa SPINEL_PROP_MESHCOP_JOINER_COMMISSIONING
+         */
+        SPINEL_STATUS_JOIN_FAILURE = SPINEL_STATUS_JOIN__BEGIN + 0,
+
+        /// The node found other peers but was unable to decode their packets.
+        /**
+         *  Typically this error code indicates that the network
+         *  key has been set incorrectly.
+         *
+         *  \sa SPINEL_PROP_NET_REQUIRE_JOIN_EXISTING
+         *  \sa SPINEL_PROP_MESHCOP_JOINER_COMMISSIONING
+         */
+        SPINEL_STATUS_JOIN_SECURITY = SPINEL_STATUS_JOIN__BEGIN + 1,
+
+        /// The node was unable to find any other peers on the network.
+        /**
+         *  \sa SPINEL_PROP_NET_REQUIRE_JOIN_EXISTING
+         *  \sa SPINEL_PROP_MESHCOP_JOINER_COMMISSIONING
+         */
+        SPINEL_STATUS_JOIN_NO_PEERS = SPINEL_STATUS_JOIN__BEGIN + 2,
+
+        /// The only potential peer nodes found are incompatible.
+        /**
+         *  \sa SPINEL_PROP_NET_REQUIRE_JOIN_EXISTING
+         */
+        SPINEL_STATUS_JOIN_INCOMPATIBLE = SPINEL_STATUS_JOIN__BEGIN + 3,
+
+        /// No response in expecting time.
+        /**
+         *  \sa SPINEL_PROP_MESHCOP_JOINER_COMMISSIONING
+         */
+        SPINEL_STATUS_JOIN_RSP_TIMEOUT = SPINEL_STATUS_JOIN__BEGIN + 4,
+
+        /// The node succeeds in commissioning and get the network credentials.
+        /**
+         *  \sa SPINEL_PROP_MESHCOP_JOINER_COMMISSIONING
+         */
+        SPINEL_STATUS_JOIN_SUCCESS = SPINEL_STATUS_JOIN__BEGIN + 5,
+
+        SPINEL_STATUS_JOIN__END = 112,
+
+        SPINEL_STATUS_RESET__BEGIN = 112,
+        SPINEL_STATUS_RESET_POWER_ON = SPINEL_STATUS_RESET__BEGIN + 0,
+        SPINEL_STATUS_RESET_EXTERNAL = SPINEL_STATUS_RESET__BEGIN + 1,
+        SPINEL_STATUS_RESET_SOFTWARE = SPINEL_STATUS_RESET__BEGIN + 2,
+        SPINEL_STATUS_RESET_FAULT = SPINEL_STATUS_RESET__BEGIN + 3,
+        SPINEL_STATUS_RESET_CRASH = SPINEL_STATUS_RESET__BEGIN + 4,
+        SPINEL_STATUS_RESET_ASSERT = SPINEL_STATUS_RESET__BEGIN + 5,
+        SPINEL_STATUS_RESET_OTHER = SPINEL_STATUS_RESET__BEGIN + 6,
+        SPINEL_STATUS_RESET_UNKNOWN = SPINEL_STATUS_RESET__BEGIN + 7,
+        SPINEL_STATUS_RESET_WATCHDOG = SPINEL_STATUS_RESET__BEGIN + 8,
+        SPINEL_STATUS_RESET__END = 128,
+
+        SPINEL_STATUS_VENDOR__BEGIN = 15360,
+        SPINEL_STATUS_VENDOR__END = 16384,
+
+        SPINEL_STATUS_STACK_NATIVE__BEGIN = 16384,
+        SPINEL_STATUS_STACK_NATIVE__END = 81920,
+
+        SPINEL_STATUS_EXPERIMENTAL__BEGIN = 2000000,
+        SPINEL_STATUS_EXPERIMENTAL__END = 2097152,
+    }
+
     public static class SpinelTools
     {
         public static Hashtable NetRoleToStr = new Hashtable()
-        {        
-            {SpinelNetRole.SPINEL_NET_ROLE_DETACHED, "DETACHED"},        
-            {SpinelNetRole.SPINEL_NET_ROLE_CHILD, "CHILD"},        
-            {SpinelNetRole.SPINEL_NET_ROLE_ROUTER, "ROUTER"},       
-            {SpinelNetRole.SPINEL_NET_ROLE_LEADER, "LEADER"},    
+        {
+            {SpinelNetRole.SPINEL_NET_ROLE_DETACHED, "DETACHED"},
+            {SpinelNetRole.SPINEL_NET_ROLE_CHILD, "CHILD"},
+            {SpinelNetRole.SPINEL_NET_ROLE_ROUTER, "ROUTER"},
+            {SpinelNetRole.SPINEL_NET_ROLE_LEADER, "LEADER"},
         };
 
         public static string SpinelNetRoleToString(SpinelNetRole NetRole)
@@ -190,20 +353,20 @@ namespace dotNETCore.OpenThread.Spinel
             //    if ((SpinelNetRole)row.Key == NetRole) return (string)row.Value;
             //}
 
-         //   return "unknown";
+            //   return "unknown";
         }
 
         public static SpinelNetRole StringToSpinelNetRole(string NetRole)
         {
-            SpinelNetRole returnNetRole=SpinelNetRole.SPINEL_NET_ROLE_DETACHED;
+            SpinelNetRole returnNetRole = SpinelNetRole.SPINEL_NET_ROLE_DETACHED;
 
             foreach (DictionaryEntry row in NetRoleToStr)
             {
-                if ((string)row.Value == NetRole) 
+                if ((string)row.Value == NetRole)
                 {
                     returnNetRole = (SpinelNetRole)row.Key;
                     break;
-                } 
+                }
             }
 
             return returnNetRole;
@@ -212,48 +375,50 @@ namespace dotNETCore.OpenThread.Spinel
 
     public class SpinelProperties
     {
-       
+
 
         ////=========================================
         //// Spinel Properties
         ////=========================================
-        public const int PROP_LAST_STATUS = 0;
+        public const int SPINEL_PROP_LAST_STATUS = 0; ///** Format: `i` - Read-only
 
-        public const int PROP_PROTOCOL_VERSION = 1;
+        public const int SPINEL_PROP_PROTOCOL_VERSION = 1; ///** Format: `ii` - Read-only
 
-        public const int PROP_NCP_VERSION = 2;
+        public const int SPINEL_PROP_NCP_VERSION = 2;// /** Format: `U` - Read-only
 
-        public const int PROP_INTERFACE_TYPE = 3; // // < [i]
-        public const int PROP_VENDOR_ID = 4; // < [i]
-        public const int PROP_CAPS = 5;  // < capability list [A(i)]
-        public const int PROP_INTERFACE_COUNT = 6; // < Interface count [C]
-        public const int PROP_POWER_STATE = 7;  // < PowerState [C]
-
+        public const int SPINEL_PROP_INTERFACE_TYPE = 3; // // Format: 'i' - Read-only
+        public const int SPINEL_PROP_VENDOR_ID = 4; // Format: 'i` - Read-only
+        public const int SPINEL_PROP_CAPS = 5;  // < capability list Format: 'A(i)` - Read-only
+        public const int SPINEL_PROP_INTERFACE_COUNT = 6; // < Interface count [C]
+        public const int SPINEL_PROP_POWER_STATE = 7;  // < PowerState [C] (deprecated, use `MCU_POWER_STATE` instead).
+        public const int SPINEL_PROP_HWADDR = 8; // NCP Hardware Address Format: 'E` - Read-only
+        public const int SPINEL_PROP_LOCK = 9; // < //< PropLock [b] (not supported)
+        public const int SPINEL_PROP_HBO_MEM_MAX = 10; ///< Max offload mem [S] (not supported)
+        public const int SPINEL_PROP_HBO_BLOCK_MAX = 11; ///< Max offload block [S] (not supported)
         public const int SPINEL_PROP_HOST_POWER_STATE = 12;  // < PowerState [C]
         public const int SPINEL_PROP_MCU_POWER_STATE = 13;  // < PowerState [C]
 
-      
-
-        public const int PROP_HWADDR = 8; // < PermEUI64 [E]
-        public const int PROP_LOCK = 9; // < PropLock [b]
-        public const int PROP_HBO_MEM_MAX = 10; // < Max offload mem [S]
-        public const int PROP_HBO_BLOCK_MAX = 11; // < Max offload block [S]
-
-        public const int PROP_PHY__BEGIN = 0x20;
-        public const int PROP_PHY_ENABLED = PROP_PHY__BEGIN + 0; // < [b]
-        public const int PROP_PHY_CHAN = PROP_PHY__BEGIN + 1; // < [C]
-        public const int PROP_PHY_CHAN_SUPPORTED = PROP_PHY__BEGIN + 2;  // < [A(C)]
-        public const int PROP_PHY_FREQ = PROP_PHY__BEGIN + 3;  // < kHz [L]
-        public const int PROP_PHY_CCA_THRESHOLD = PROP_PHY__BEGIN + 4;  // < dBm [c]
-        public const int PROP_PHY_TX_POWER = PROP_PHY__BEGIN + 5;  // < [c]
-        public const int PROP_PHY_RSSI = PROP_PHY__BEGIN + 6;  // < dBm [c]
-        public const int PROP_PHY__END = 0x30;
+        public const int SPINEL_PROP_PHY__BEGIN = 0x20;
+        public const int SPINEL_PROP_PHY_ENABLED = SPINEL_PROP_PHY__BEGIN + 0; // < [b]
+        public const int SPINEL_PROP_PHY_CHAN = SPINEL_PROP_PHY__BEGIN + 1; // < [C]
+        public const int SPINEL_PROP_PHY_CHAN_SUPPORTED = SPINEL_PROP_PHY__BEGIN + 2;  // < [A(C)]
+        public const int SPINEL_PROP_PHY_FREQ = SPINEL_PROP_PHY__BEGIN + 3;  // < kHz [L]
+        public const int SPINEL_PROP_PHY_CCA_THRESHOLD = SPINEL_PROP_PHY__BEGIN + 4;  // < dBm [c]
+        public const int SPINEL_PROP_PHY_TX_POWER = SPINEL_PROP_PHY__BEGIN + 5;  // < [c]
+        public const int SPINEL_PROP_PHY_RSSI = SPINEL_PROP_PHY__BEGIN + 6;  // < dBm [c]
+        public const int SPINEL_PROP_PHY_RX_SENSITIVITY = SPINEL_PROP_PHY__BEGIN + 7;  // < dBm [c]
+        public const int SPINEL_PROP_PHY_PCAP_ENABLED = SPINEL_PROP_PHY__BEGIN + 8;  ///< [b]
+        public const int SPINEL_PROP_PHY_CHAN_PREFERRED = SPINEL_PROP_PHY__BEGIN + 9;  ///< [A(C)]
+        public const int SPINEL_PROP_PHY_FEM_LNA_GAIN = SPINEL_PROP_PHY__BEGIN + 10; ///< dBm [c]
+        public const int SPINEL_PROP_PHY_CHAN_MAX_POWER = SPINEL_PROP_PHY__BEGIN + 11; ///Signal the max power for a channel Format: `Cc` First byte is the channel then the max transmit power, write-only.
+        public const int SPINEL_PROP_PHY_REGION_CODE = SPINEL_PROP_PHY__BEGIN + 12; /// Region code Format: `S` The ascii representation of the ISO 3166 alpha-2 code.
+        public const int SPINEL_PROP_PHY__END = 0x30;
 
         public const int SPINEL_PROP_MAC__BEGIN = 0x30;
         public const int SPINEL_PROP_MAC_SCAN_STATE = SPINEL_PROP_MAC__BEGIN + 0;//< [C]
         public const int SPINEL_PROP_MAC_SCAN_MASK = SPINEL_PROP_MAC__BEGIN + 1;//< [A(C)]
         public const int SPINEL_PROP_MAC_SCAN_PERIOD = SPINEL_PROP_MAC__BEGIN + 2;//< ms-per-channel [S]
-                                                                    //< chan,rssi,(laddr,saddr,panid,lqi),(proto,xtra) [Cct(ESSC)t(i)]
+                                                                                  //< chan,rssi,(laddr,saddr,panid,lqi),(proto,xtra) [Cct(ESSC)t(i)]
         public const int SPINEL_PROP_MAC_SCAN_BEACON = SPINEL_PROP_MAC__BEGIN + 3;
         public const int SPINEL_PROP_MAC_15_4_LADDR = SPINEL_PROP_MAC__BEGIN + 4;//< [E]
         public const int SPINEL_PROP_MAC_15_4_SADDR = SPINEL_PROP_MAC__BEGIN + 5;//< [S]
@@ -261,14 +426,14 @@ namespace dotNETCore.OpenThread.Spinel
         public const int SPINEL_PROP_MAC_RAW_STREAM_ENABLED = SPINEL_PROP_MAC__BEGIN + 7;//< [C]
         public const int SPINEL_PROP_MAC_FILTER_MODE = SPINEL_PROP_MAC__BEGIN + 8;//< [C]
         public const int SPINEL_PROP_MAC_ENERGY_SCAN_RESULT = SPINEL_PROP_MAC__BEGIN + 9;// `C`: Channel `c`: RSSI (in dBm)
-        
+
 
         public const int PROP_MAC__END = 0x40;
 
         public const int SPINEL_PROP_NET__BEGIN = 0x40;
         public const int SPINEL_PROP_NET_SAVED = SPINEL_PROP_NET__BEGIN + 0;//< [b]
         public const int SPINEL_PROP_NET_IF_UP = SPINEL_PROP_NET__BEGIN + 1;//< [b]
-        public const int SPINEL_PROP_NET_STACK_UP  = SPINEL_PROP_NET__BEGIN + 2;//< [C]
+        public const int SPINEL_PROP_NET_STACK_UP = SPINEL_PROP_NET__BEGIN + 2;//< [C]
         public const int SPINEL_PROP_NET_ROLE = SPINEL_PROP_NET__BEGIN + 3;//< [C]
         public const int SPINEL_PROP_NET_NETWORK_NAME = SPINEL_PROP_NET__BEGIN + 4;//< [U]
         public const int SPINEL_PROP_NET_XPANID = SPINEL_PROP_NET__BEGIN + 5;//< [D]
@@ -276,7 +441,7 @@ namespace dotNETCore.OpenThread.Spinel
         public const int SPINEL_PROP_NET_KEY_SEQUENCE_COUNTER = SPINEL_PROP_NET__BEGIN + 7;//< [L]
         public const int SPINEL_PROP_NET_PARTITION_ID = SPINEL_PROP_NET__BEGIN + 8;//< [L]
         public const int SPINEL_PROP_NET_REQUIRE_JOIN_EXISTING = SPINEL_PROP_NET__BEGIN + 9;//< [b]        
-        public const int SPINEL_PROP_NET_KEY_SWITCH_GUARDTIME  = SPINEL_PROP_NET__BEGIN + 10;//< [L]
+        public const int SPINEL_PROP_NET_KEY_SWITCH_GUARDTIME = SPINEL_PROP_NET__BEGIN + 10;//< [L]
         public const int SPINEL_PROP_NET_PSKC = SPINEL_PROP_NET__BEGIN + 11;//< [D]
         public const int PROP_NET__END = 0x50;
 
@@ -291,7 +456,7 @@ namespace dotNETCore.OpenThread.Spinel
         public const int SPINEL_PROP_THREAD_NETWORK_DATA_VERSION = SPINEL_PROP_THREAD__BEGIN + 7;//< [S]
         public const int SPINEL_PROP_THREAD_STABLE_NETWORK_DATA = SPINEL_PROP_THREAD__BEGIN + 8;//< [D]
         public const int SPINEL_PROP_THREAD_STABLE_NETWORK_DATA_VERSION = SPINEL_PROP_THREAD__BEGIN + 9;//< [S]
-                                                                                          //< array(ipv6prefix,prefixlen,stable,flags) [A(t(6CbC))]
+                                                                                                        //< array(ipv6prefix,prefixlen,stable,flags) [A(t(6CbC))]
         public const int SPINEL_PROP_THREAD_ON_MESH_NETS = SPINEL_PROP_THREAD__BEGIN + 10;
         //< array(ipv6prefix,prefixlen,stable,flags) [A(t(6CbC))]
         public const int SPINEL_PROP_THREAD_OFF_MESH_ROUTES = SPINEL_PROP_THREAD__BEGIN + 11;
