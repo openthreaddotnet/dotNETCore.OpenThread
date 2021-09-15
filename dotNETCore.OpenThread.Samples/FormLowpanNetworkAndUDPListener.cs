@@ -46,7 +46,7 @@ namespace Samples
             }
 
             string tempString;
-
+         
             Console.WriteLine("Enter new values or press enter to keep default values.");
             Console.WriteLine();
 
@@ -101,6 +101,10 @@ namespace Samples
             Socket receiver = new Socket();
             receiver.Bind(IPAddress.Any, port);
             IPEndPoint remoteIp = null;
+
+            IPAddress[] iPAddresses = loWPAN.IPAddresses;
+
+            Console.WriteLine("UDP Server listening.");
 
             while (true)
             {

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "dotNETCore.OpenThread.Samples": {
+      "commandName": "Project",
+      "commandLineArgs": "COM14"
+    }
+  }
+}
