@@ -5,6 +5,7 @@ using dotNETCore.OpenThread.NCP;
 using dotNETCore.OpenThread.Net;
 using dotNETCore.OpenThread.Net.Lowpan;
 using dotNETCore.OpenThread.Net.Sockets;
+using dotNETCore.OpenThread.Spinel;
 
 namespace Samples
 {
@@ -83,8 +84,8 @@ namespace Samples
             {
                 port = Convert.ToUInt16(tempString);
             }
-
-            loWPAN.OnLastStatusHandler += OnLastStatus;
+           
+            loWPAN.OnLowpanPropertyChanged += LoWPAN_OnLowpanPropertyChanged;
 
             try
             {
@@ -114,12 +115,15 @@ namespace Samples
             }
         }
 
-        private static void OnLastStatus(LastStatus lastStatus)
+        private static void LoWPAN_OnLowpanPropertyChanged(uint PropertyId)
         {
-            if (lastStatus.ToString().ToLower() != "ok")
+            if(PropertyId== SpinelProperties.SPINEL_PROP_LAST_STATUS)
             {
-                Console.WriteLine(lastStatus.ToString());
+                if(loWPAN.LastStatus!= SpinelStatus.SPINEL_STATUS_OK)                    
+                {
+                    Console.WriteLine(loWPAN.LastStatus.ToString());
+                }
             }
-        }
+        }   
     }
 }
