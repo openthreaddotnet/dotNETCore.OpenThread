@@ -67,6 +67,8 @@ namespace Samples
 
                 netNotExists = false;
 
+                if (lowpannets == null) break;
+
                 foreach (var lowpannet in lowpannets)
                 {
                     if (lowpannet.NetworkName == networkname)
@@ -141,7 +143,7 @@ namespace Samples
             }
         }
 
-        private static void LoWPAN_OnLowpanPropertyChanged(uint PropertyId)
+        private static void LoWPAN_OnLowpanPropertyChanged(SpinelProperties PropertyId)
         {
             if(PropertyId== SpinelProperties.SPINEL_PROP_LAST_STATUS)
             {
