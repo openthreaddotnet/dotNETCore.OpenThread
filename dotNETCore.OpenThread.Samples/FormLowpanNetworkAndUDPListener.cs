@@ -45,18 +45,39 @@ namespace Samples
                 return;
             }
 
+            var lowpanScanner = loWPAN.LowpanScanner;
+            LowpanBeaconInfo[] lowpannets = lowpanScanner.ScanBeacon();
+
             string tempString;
          
             Console.WriteLine("Enter new values or press enter to keep default values.");
             Console.WriteLine();
 
-            Console.Write("Networkname: {0} ? ", networkname);
-            tempString = Console.ReadLine();
-            if (tempString != string.Empty && tempString != networkname)
+            bool netNotExists = true;
+
+            while (netNotExists)
             {
-                networkname = tempString;
+                Console.Write("Networkname: {0} ? ", networkname);
+                tempString = Console.ReadLine();
+
+                if (tempString != string.Empty && tempString != networkname)
+                {
+                    networkname = tempString;
+                }
+
+                netNotExists = false;
+
+                foreach (var lowpannet in lowpannets)
+                {
+                    if (lowpannet.NetworkName == networkname)
+                    {
+                        netNotExists = true;
+                        Console.WriteLine("Network exists, please try again.");
+                        break;
+                    }
+                }
             }
-         
+                   
             Console.Write("Channel:  {0} ? ", channel.ToString());
             tempString = Console.ReadLine();
             if (tempString != string.Empty && Convert.ToByte(tempString) != channel)
@@ -86,8 +107,9 @@ namespace Samples
             }
            
             loWPAN.OnLowpanPropertyChanged += LoWPAN_OnLowpanPropertyChanged;
-
+            
             try
+            
             {
                 loWPAN.Form(networkname, channel, masterkey, panid);
             }
